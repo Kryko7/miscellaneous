@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	totalNumbers := uint64(100000000)
+	totalNumbers := uint64(10000000000)
 
 	startTime := time.Now()
 	

@@ -24,7 +24,7 @@ type Result struct {
 func main() {
 	numWorkers := 10
 
-	totalNumbers := uint64(100000000)
+	totalNumbers := uint64(10000000000)
 
 	chunkSize := totalNumbers / uint64(numWorkers)
 
@@ -34,12 +34,19 @@ func main() {
 
 	startTime := time.Now()
 
+	servers := []string{
+		"localhost:8081",
+		"localhost:8082",
+		"localhost:8083",}
+	numServers := len(servers)
+
 	for i:=0; i < numWorkers; i++ {
 		wg.Add(1)
 		go func(workerID uint64) {
 			defer wg.Done()
 
-			client, err := rpc.Dial("tcp", "localhost:8081")
+			serverAddr := servers[workerID % uint64(numServers)]
+			client, err := rpc.Dial("tcp", serverAddr)
 			if err != nil {
 				log.Fatal("Failed to dial worker:", err)
 			}
